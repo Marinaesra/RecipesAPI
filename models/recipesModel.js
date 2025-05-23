@@ -44,8 +44,9 @@ const movieSchema = new Schema({
   },
 
     likes: {
-    type: String,
-    required: [true, "El like es obligatorio"],
+        // type: [ mongoose.Schema.Types.ObjectId ], //TODO: Cambiar a ObjectId
+    type: [String],
+    // ref: "User",
   },
    creation: {
     type: String,

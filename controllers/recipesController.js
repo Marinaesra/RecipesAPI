@@ -10,6 +10,24 @@ const addRecipes = async (req, res) => {
   }
 };
 
+const allRecipesAndLikes = async (req,res) => {
+  try {
+  const recipe = await recipes.find();
+  if (recipe.length === 0){
+    return res.status(200).send({message:"La receta no existe"});
+  }
+  console.log(recipe)
+  // recipe.likes = recipe.likes ? 0: recipe.likes.length;
+ //recipe.likes.numLikes = 0
+  res.status(200).send({ status: "Success", data: recipe });
+  } catch (error) {
+   res.status(500).send({ status: "Failed", error: error.message });
+  
+}};
+
+
+
 module.exports = {
-    addRecipes
+    addRecipes,
+    allRecipesAndLikes
 }
