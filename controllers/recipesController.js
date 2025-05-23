@@ -18,7 +18,7 @@ const allRecipesAndLikes = async (req,res) => {
   }
   console.log(recipe)
   // recipe.likes = recipe.likes ? 0: recipe.likes.length;
- //recipe.likes.numLikes = 0
+ // recipe.likes.numLikes = recipe.likes ? 0: recipe?.likes.length;
   res.status(200).send({ status: "Success", data: recipe });
   } catch (error) {
    res.status(500).send({ status: "Failed", error: error.message });
