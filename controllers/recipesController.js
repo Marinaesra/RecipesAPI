@@ -1,9 +1,9 @@
-const recipes = require('../models/recipesModel')
+const recipesModel = require('../models/recipesModel')
 
 const addRecipes = async (req, res) => {
   try {
     const newRecipe = req.body;
-    await recipes.create(newRecipe);
+    await recipesModel.create(newRecipe);
     res.status(200).send("La receta se ha añadio correctamente");
   } catch (error) {
     res.status(500).send({ status: "Failed", error: error.message });
@@ -12,7 +12,7 @@ const addRecipes = async (req, res) => {
 
 const allRecipesAndLikes = async (req,res) => {
   try {
-  const recipe = await recipes.find();
+  const recipe = await recipesModel.find();
   if (recipe.length === 0){
     return res.status(200).send({message:"La receta no existe"});
   }
@@ -25,9 +25,23 @@ const allRecipesAndLikes = async (req,res) => {
   
 }};
 
+const recipesId = async (req, res) =>{
+  try {
+     const { idRecipes } = req.params;
+    const recipes = await recipesModel.findById(idRecipes);
+    if (!recipes) {
+      res.status(200).send("La receta no se encuentra");
+    }
+    res.status(200).send({ status: "Success", data: recipes });
+    
+  } catch (error) {
+       res.status(500).send({ status: "Failed", error: error.message });
+
+  }};
 
 
 module.exports = {
     addRecipes,
-    allRecipesAndLikes
+    allRecipesAndLikes,
+    recipesId
 }
