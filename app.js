@@ -3,6 +3,7 @@ require('dotenv').config();
 const connectToDatabase = require('./db/connectDB');
 const recipesRouter = require('./routers/recipesRouter');
 const loginRouter = require ('./routers/loginRouter');
+const userRouter = require ('./routers/userRouter');
 
 
 //Crear una aplicacion de Express
@@ -14,6 +15,7 @@ connectToDatabase();
 app.use(express.json());
 app.use('/api/recipes', recipesRouter);
 app.use('/api/auth', loginRouter);
+app.use('/api/user', userRouter);
 
 
 //Configuracion del puerto
