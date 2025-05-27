@@ -1,9 +1,8 @@
 const recipesModel = require("../models/recipesModel");
 const userModel = require("../models/userModel");
 
-
 const addRecipes = async (req, res) => {
-   const isAdminUser =
+  const isAdminUser =
     (await userModel.findById(req.payload._id)).role === "admin";
   if (!isAdminUser) {
     throw new Error("El usuario no tiene permisos de administrador");
@@ -68,9 +67,54 @@ const recentRecipes = async (req, res) => {
   }
 };
 
+const updateRecipe = async (req, res) => {
+  const isAdminUser =
+    (await userModel.findById(req.payload._id)).role === "admin";
+  if (!isAdminUser) {
+    throw new Error("El usuario no tiene permisos de administrador");
+  }
+  try {
+    const idRecipe = req.params.idRecipe;
+    const newRecipe = req.body;
+    const updateRecipe = await recipesModel.findByIdAndUpdate(
+      idRecipe,
+      newRecipe,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    if (!updateRecipe) {
+      return res.status(200).send("No hay receta");
+    }
+    res.status(200).send({ status: "Success", data: updateRecipe });
+  } catch (error) {
+    res.status(500).send({ status: "Failed", error: error.message });
+  }
+};
+
+const deleteRecipe = async (req, res) => {
+   const isAdminUser =
+    (await userModel.findById(req.payload._id)).role === "admin";
+  if (!isAdminUser) {
+    throw new Error("El usuario no tiene permisos de administrador");
+  }
+  try {
+    const idRecipe = req.params.idRecipe;
+    await recipesModel.findByIdAndDelete(idRecipe);
+    res
+      .status(200)
+      .send({ status: "Sucess", data: "La receta se elimino correctamente" });
+  } catch (error) {
+    res.status(500).send({ status: "Failed", error: error.message });
+  }
+};
+
 module.exports = {
   addRecipes,
   allRecipesAndLikes,
   recipesId,
   recentRecipes,
+  updateRecipe,
+  deleteRecipe
 };

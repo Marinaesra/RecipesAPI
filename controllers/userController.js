@@ -17,12 +17,6 @@ const getMyFavourites = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
 const addFavouriteRecipe = async (req, res) => {
   try {
     const { idRecipe } = req.params;
@@ -71,6 +65,7 @@ const deleteFavouriteRecipe = async (req, res) => {
     res.status(500).send({ status: "Failed", error: error.message });
   }
 };
+
 
 module.exports = {
     addFavouriteRecipe,
