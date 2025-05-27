@@ -1,6 +1,28 @@
 const userModel = require("../models/userModel");
 const recipeModel = require("../models/recipesModel");
 
+const getMyFavourites = async (req, res) => {
+  try {
+    const idUser = req.payload._id;
+    const user = await userModel
+      .findById(idUser)
+      .populate({ path: "favouritesRecipes"});
+
+    if (!user) {
+      return res.status(200).send("No hay usuario");
+    }
+    res.status(200).send({ status: "Sucess", data: user });
+  } catch (error) {
+    res.status(500).send({ status: "Failed", error: error.message });
+  }
+};
+
+
+
+
+
+
+
 const addFavouriteRecipe = async (req, res) => {
   try {
     const { idRecipe } = req.params;
@@ -15,11 +37,33 @@ const addFavouriteRecipe = async (req, res) => {
       return res.status(200).send("No hay receta");
     }
 
-    if (user.favourites.includes(idRecipe)) {
+    if (user.favouritesRecipes.includes(idRecipe)) {
       return res.status(200).send("La receta ya está en favoritos");
     }
 
-    user.favourites.push(idRecipe);
+    user.favouritesRecipes.push(idRecipe);
+    user.save();
+
+    res.status(200).send({ status: "Success", data: user });
+  } catch (error) {
+    res.status(500).send({ status: "Failed", error: error.message });
+  }
+};
+
+const deleteFavouriteRecipe = async (req, res) => {
+  try {
+    const {idRecipe} = req.params;
+     const idUser = req.payload._id;
+    const user = await userModel.findById(idUser);
+    if (!user) {
+      return res.status(200).send("No hay usuario");
+    }
+
+    if (!user.favouritesRecipes.includes(idRecipe)) {
+      return res.status(200).send("La receta NO  está en favoritos");
+    }
+
+    user.favouritesRecipes.pull(idRecipe);
     user.save();
 
     res.status(200).send({ status: "Success", data: user });
@@ -30,4 +74,6 @@ const addFavouriteRecipe = async (req, res) => {
 
 module.exports = {
     addFavouriteRecipe,
+    deleteFavouriteRecipe,
+    getMyFavourites
 }

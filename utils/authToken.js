@@ -8,7 +8,7 @@ const generateToken = (payload, isRefreshToken) => {
   }
  
   return jwt.sign(payload, process.env.SECRET_TOKEN, {
-    expiresIn: "15min",
+    expiresIn: "60min",
   });
 };
  

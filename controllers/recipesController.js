@@ -1,6 +1,13 @@
 const recipesModel = require("../models/recipesModel");
+const userModel = require("../models/userModel");
+
 
 const addRecipes = async (req, res) => {
+   const isAdminUser =
+    (await userModel.findById(req.payload._id)).role === "admin";
+  if (!isAdminUser) {
+    throw new Error("El usuario no tiene permisos de administrador");
+  }
   try {
     const newRecipe = req.body;
     await recipesModel.create(newRecipe);

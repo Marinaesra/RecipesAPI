@@ -5,9 +5,10 @@ const {
     allRecipesAndLikes, 
     recipesId,
     recentRecipes
-} = require('../controllers/recipesController')
+} = require('../controllers/recipesController');
+const { verifyToken, verifyAdmin } = require("../middleware/auth");
 
-router.post('/', addRecipes)
+router.post('/', verifyToken, verifyAdmin, addRecipes)
 router.get('/', allRecipesAndLikes)
 router.get('/getById/:idRecipes', recipesId)
 router.get('/recent', recentRecipes)

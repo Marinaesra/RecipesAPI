@@ -64,5 +64,5 @@ const movieSchema = new Schema({
   },
 });
  
-const recipes = mongoose.model("Recipe", movieSchema, "recipe");
+const recipes = mongoose.model("Recipes", movieSchema, "recipe");
 module.exports = recipes
