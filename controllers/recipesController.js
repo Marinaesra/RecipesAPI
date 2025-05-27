@@ -94,7 +94,7 @@ const updateRecipe = async (req, res) => {
 };
 
 const deleteRecipe = async (req, res) => {
-   const isAdminUser =
+  const isAdminUser =
     (await userModel.findById(req.payload._id)).role === "admin";
   if (!isAdminUser) {
     throw new Error("El usuario no tiene permisos de administrador");
@@ -110,11 +110,39 @@ const deleteRecipe = async (req, res) => {
   }
 };
 
+const addComentRecipe = async (req, res) => {
+  try {
+    const idRecipe  = req.params.idRecipe;
+    const { comment, rating } = req.body;
+    const userId = req.payload._id;
+
+    const recipe = await recipesModel.findById(idRecipe);
+
+    if (!recipe) {
+      return res.status(200).send("La receta no existe");
+    }
+
+    const newComent = {
+      userId: userId,
+      comment: comment,
+      rating: rating
+    };
+
+    recipe.comments.push(newComent);
+    recipe.save();
+
+    res.status(200).send({ status: "Success", data: recipe });
+  } catch (error) {
+    res.status(500).send({ status: "Failed", error: error.message });
+  }
+};
+
 module.exports = {
   addRecipes,
   allRecipesAndLikes,
   recipesId,
   recentRecipes,
   updateRecipe,
-  deleteRecipe
+  deleteRecipe,
+  addComentRecipe,
 };

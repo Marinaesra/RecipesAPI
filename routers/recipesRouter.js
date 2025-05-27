@@ -6,7 +6,8 @@ const {
     recipesId,
     recentRecipes,
     updateRecipe,
-    deleteRecipe
+    deleteRecipe,
+    addComentRecipe
 } = require('../controllers/recipesController');
 const { verifyToken, verifyAdmin } = require("../middleware/auth");
 //const { route } = require("./userRouter");
@@ -17,5 +18,6 @@ router.get('/getById/:idRecipes', recipesId)
 router.get('/recent', recentRecipes)
 router.patch('/:idRecipe', verifyToken, verifyAdmin, updateRecipe)
 router.delete('/:idRecipe', verifyToken, verifyAdmin, deleteRecipe)
+router.patch('/coment/:idRecipe',verifyToken,verifyAdmin, addComentRecipe)
 
 module.exports = router;
