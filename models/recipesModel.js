@@ -5,16 +5,16 @@ const commentSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
   comment: {
     type: String,
-    required: true
+    required: true,
   },
 
-    rating: {
+  rating: {
     type: Number,
-    required: true
+    required: true,
   },
 
   createdAt: {
@@ -22,7 +22,7 @@ const commentSchema = new Schema({
     default: Date.now,
   },
 });
-  
+
 const movieSchema = new Schema({
   title: {
     type: String,
@@ -49,12 +49,11 @@ const movieSchema = new Schema({
     required: [false, "La URL es obligatoria"],
   },
 
-    likes: {
-        // type: [ mongoose.Schema.Types.ObjectId ], //TODO: Cambiar a ObjectId
-    type: [String],
-    // ref: "User",
+  likes: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "User",
   },
-   creation: {
+  creation: {
     type: String,
     required: [true, "El año es obligatorio"],
   },
@@ -64,11 +63,11 @@ const movieSchema = new Schema({
   },
 
   comments: [commentSchema],
-    createdAt: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
 });
- 
+
 const recipes = mongoose.model("Recipes", movieSchema, "recipe");
-module.exports = recipes
+module.exports = recipes;

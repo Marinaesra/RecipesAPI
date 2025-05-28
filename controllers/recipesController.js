@@ -74,10 +74,10 @@ const updateRecipe = async (req, res) => {
     throw new Error("El usuario no tiene permisos de administrador");
   }
   try {
-    const idRecipe = req.params.idRecipe;
+    const idUser = req.params.idUser;
     const newRecipe = req.body;
     const updateRecipe = await recipesModel.findByIdAndUpdate(
-      idRecipe,
+      idUser,
       newRecipe,
       {
         new: true,
@@ -100,8 +100,8 @@ const deleteRecipe = async (req, res) => {
     throw new Error("El usuario no tiene permisos de administrador");
   }
   try {
-    const idRecipe = req.params.idRecipe;
-    await recipesModel.findByIdAndDelete(idRecipe);
+    const idUser = req.params.idUser;
+    await recipesModel.findByIdAndDelete(idUser);
     res
       .status(200)
       .send({ status: "Sucess", data: "La receta se elimino correctamente" });
@@ -112,11 +112,11 @@ const deleteRecipe = async (req, res) => {
 
 const addComentRecipe = async (req, res) => {
   try {
-    const idRecipe  = req.params.idRecipe;
+    const idUser  = req.params.idUser;
     const { comment, rating } = req.body;
     const userId = req.payload._id;
 
-    const recipe = await recipesModel.findById(idRecipe);
+    const recipe = await recipesModel.findById(idUser);
 
     if (!recipe) {
       return res.status(200).send("La receta no existe");
@@ -137,6 +137,59 @@ const addComentRecipe = async (req, res) => {
   }
 };
 
+const addLikeRecipe = async (req, res) => {
+  try {
+    const { idUser } = req.params;
+     const idRecipe = req.payload._id
+    const user = await userModel.findById(idRecipe);
+    if (!user) {
+      return res.status(200).send("No hay usuario");
+    }
+
+    const recipe = await recipeModel.findById(idUser);
+    if (!recipe) {
+      return res.status(200).send("No hay receta");
+    }
+
+    if (user.favouritesRecipes.includes(idUser)) {
+      return res.status(200).send("Le has dado like a la receta");
+    }
+
+    user.favouritesRecipes.push(idUser);
+    user.save();
+
+    res.status(200).send({ status: "Success", data: user });
+  } catch (error) {
+    res.status(500).send({ status: "Failed", error: error.message });
+  }
+};
+
+const deleteLikeRecipe = async (req, res) => {
+  try {
+    const { idUser } = req.params;
+     const idRecipe = req.payload._id
+    const user = await userModel.findById(idRecipe);
+    if (!user) {
+      return res.status(200).send("No hay usuario");
+    }
+
+    const recipe = await recipeModel.findById(idUser);
+    if (!recipe) {
+      return res.status(200).send("No hay receta");
+    }
+
+    if (user.likes.includes(idUser)) {
+      return res.status(200).send("Le has quitado el like a la receta");
+    }
+
+    user.likes.push(idUser);
+    user.save();
+
+    res.status(200).send({ status: "Success", data: user });
+  } catch (error) {
+    res.status(500).send({ status: "Failed", error: error.message });
+  }
+};
 
 module.exports = {
   addRecipes,
@@ -146,4 +199,6 @@ module.exports = {
   updateRecipe,
   deleteRecipe,
   addComentRecipe,
+  addLikeRecipe,
+  deleteLikeRecipe
 };
