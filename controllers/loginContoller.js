@@ -12,6 +12,15 @@ const signup = async (req, res) => {
     };
     await userModel.create(newUser);
 
+    
+    const to = email;
+    const subject = "Bienvenido a nuestra App";
+    const html = `<h3> Hola ${name} gracias por registrarte en nuestra aplicación </h3>
+                  <p> Si tienes cualquier duda contacta a este correo </p>
+                  `;
+
+    await sendEmail(to, subject, html);
+
     res.status(200).send("El usuario se ha creado correctamente");
   } catch (error) {
     res.status(500).send({ status: "Failed", error: error.message });
