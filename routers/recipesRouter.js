@@ -21,7 +21,7 @@ router.get('/recent', recentRecipes)
 router.patch('/:idRecipe', verifyToken, verifyAdmin, updateRecipe)
 router.delete('/:idRecipe', verifyToken, verifyAdmin, deleteRecipe)
 router.patch('/coment/:idRecipe',verifyToken,verifyAdmin, addComentRecipe)
-router.patch('/like',verifyToken, addLikeRecipe)
-router.delete('/removelike',verifyToken, deleteLikeRecipe)
+router.patch('/like/:idUser',verifyToken, addLikeRecipe)
+router.delete('/removelike/idUser:',verifyToken, deleteLikeRecipe)
 
 module.exports = router;
