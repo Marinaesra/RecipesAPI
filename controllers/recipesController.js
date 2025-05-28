@@ -158,6 +158,15 @@ const addLikeRecipe = async (req, res) => {
     user.favouritesRecipes.push(idUser);
     user.save();
 
+   const to = email;
+    const subject = "Recetas";
+    const html = `<h3> Le has dado me gusta a nuestra receta </h3>
+                  <p> Si quieres recibir mas actualizaciones sobre nuestras recetas, subscribete en este correo, gracias" </p>
+                  `;
+
+    await sendEmail(to, subject, html);
+
+
     res.status(200).send({ status: "Success", data: user });
   } catch (error) {
     res.status(500).send({ status: "Failed", error: error.message });
@@ -184,6 +193,16 @@ const deleteLikeRecipe = async (req, res) => {
 
     user.likes.push(idUser);
     user.save();
+
+
+    const to = email;
+    const subject = "Recetas";
+    const html = `<h3> Ha dejado de gustarte una de nuestras recetas </h3>
+                  <p> Si quieres comentarnos el motivo, estariamos encantados de escucharte y que mejoremos, gracias" </p>
+                  `;
+
+    await sendEmail(to, subject, html);
+
 
     res.status(200).send({ status: "Success", data: user });
   } catch (error) {
