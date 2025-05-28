@@ -66,9 +66,31 @@ const deleteFavouriteRecipe = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const idUser = req.params.idUser;
+    const newUser = req.body;
+    const updateUser = await userModel.findOneAndReplace(
+      { _id: idUser },
+      newUser,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    if (!updateUser) {
+      return res.status(200).send("No hay usuario");
+    }
+    res.status(200).send({ status: "Success", data: updateUser });
+  } catch (error) {
+    res.status(500).send({ status: "Failed", error: error.message });
+  }
+};
+
 
 module.exports = {
     addFavouriteRecipe,
     deleteFavouriteRecipe,
-    getMyFavourites
+    getMyFavourites,
+    updateUser
 }
