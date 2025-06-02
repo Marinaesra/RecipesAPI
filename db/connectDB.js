@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
- 
+
 const connectToDatabase = async () => {
   try {
     const URL_MONGO = process.env.URL_MONGO;
@@ -9,5 +9,5 @@ const connectToDatabase = async () => {
     console.log("Error al conectar con mongoDB", error);
   }
 };
- 
+
 module.exports = connectToDatabase;

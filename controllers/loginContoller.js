@@ -12,7 +12,6 @@ const signup = async (req, res) => {
     };
     await userModel.create(newUser);
 
-    
     const to = email;
     const subject = "Bienvenido a nuestra App";
     const html = `<h3> Hola ${name} gracias por registrarte en nuestra aplicación </h3>
@@ -59,7 +58,6 @@ const login = async (req, res) => {
     res.status(500).send({ status: "Failed", error: error.message });
   }
 };
-
 
 module.exports = {
   signup,

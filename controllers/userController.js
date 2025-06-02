@@ -6,7 +6,7 @@ const getMyFavourites = async (req, res) => {
     const idUser = req.payload._id;
     const user = await userModel
       .findById(idUser)
-      .populate({ path: "favouritesRecipes"});
+      .populate({ path: "favouritesRecipes" });
 
     if (!user) {
       return res.status(200).send("No hay usuario");
@@ -20,7 +20,7 @@ const getMyFavourites = async (req, res) => {
 const addFavouriteRecipe = async (req, res) => {
   try {
     const { idRecipe } = req.params;
-     const idUser = req.payload._id
+    const idUser = req.payload._id;
     const user = await userModel.findById(idUser);
     if (!user) {
       return res.status(200).send("No hay usuario");
@@ -46,8 +46,8 @@ const addFavouriteRecipe = async (req, res) => {
 
 const deleteFavouriteRecipe = async (req, res) => {
   try {
-    const {idRecipe} = req.params;
-     const idUser = req.payload._id;
+    const { idRecipe } = req.params;
+    const idUser = req.payload._id;
     const user = await userModel.findById(idUser);
     if (!user) {
       return res.status(200).send("No hay usuario");
@@ -87,10 +87,9 @@ const updateUser = async (req, res) => {
   }
 };
 
-
 module.exports = {
-    addFavouriteRecipe,
-    deleteFavouriteRecipe,
-    getMyFavourites,
-    updateUser
-}
+  addFavouriteRecipe,
+  deleteFavouriteRecipe,
+  getMyFavourites,
+  updateUser,
+};

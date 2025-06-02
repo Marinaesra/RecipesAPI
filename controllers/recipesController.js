@@ -112,7 +112,7 @@ const deleteRecipe = async (req, res) => {
 
 const addComentRecipe = async (req, res) => {
   try {
-    const idUser  = req.params.idUser;
+    const idUser = req.params.idUser;
     const { comment, rating } = req.body;
     const userId = req.payload._id;
 
@@ -125,7 +125,7 @@ const addComentRecipe = async (req, res) => {
     const newComent = {
       userId: userId,
       comment: comment,
-      rating: rating
+      rating: rating,
     };
 
     recipe.comments.push(newComent);
@@ -140,7 +140,7 @@ const addComentRecipe = async (req, res) => {
 const addLikeRecipe = async (req, res) => {
   try {
     const { idUser } = req.params;
-     const idRecipe = req.payload._id
+    const idRecipe = req.payload._id;
     const user = await userModel.findById(idRecipe);
     if (!user) {
       return res.status(200).send("No hay usuario");
@@ -158,14 +158,13 @@ const addLikeRecipe = async (req, res) => {
     user.favouritesRecipes.push(idUser);
     user.save();
 
-   const to = email;
+    const to = email;
     const subject = "Recetas";
     const html = `<h3> Le has dado me gusta a nuestra receta </h3>
                   <p> Si quieres recibir mas actualizaciones sobre nuestras recetas, subscribete en este correo, gracias" </p>
                   `;
 
     await sendEmail(to, subject, html);
-
 
     res.status(200).send({ status: "Success", data: user });
   } catch (error) {
@@ -176,7 +175,7 @@ const addLikeRecipe = async (req, res) => {
 const deleteLikeRecipe = async (req, res) => {
   try {
     const { idUser } = req.params;
-     const idRecipe = req.payload._id
+    const idRecipe = req.payload._id;
     const user = await userModel.findById(idRecipe);
     if (!user) {
       return res.status(200).send("No hay usuario");
@@ -194,7 +193,6 @@ const deleteLikeRecipe = async (req, res) => {
     user.likes.push(idUser);
     user.save();
 
-
     const to = email;
     const subject = "Recetas";
     const html = `<h3> Ha dejado de gustarte una de nuestras recetas </h3>
@@ -202,7 +200,6 @@ const deleteLikeRecipe = async (req, res) => {
                   `;
 
     await sendEmail(to, subject, html);
-
 
     res.status(200).send({ status: "Success", data: user });
   } catch (error) {
@@ -219,5 +216,5 @@ module.exports = {
   deleteRecipe,
   addComentRecipe,
   addLikeRecipe,
-  deleteLikeRecipe
+  deleteLikeRecipe,
 };
